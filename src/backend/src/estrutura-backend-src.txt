@@ -1,0 +1,42 @@
+.
+├── estrutura-backend-src.txt
+├── main
+│   ├── java
+│   │   └── pt
+│   │       └── ulisboa
+│   │           └── tecnico
+│   │               └── rnl
+│   │                   └── dei
+│   │                       └── dms
+│   │                           ├── DmsApplication.java
+│   │                           ├── config
+│   │                           │   └── WebConfiguration.java
+│   │                           ├── exceptions
+│   │                           │   ├── CustomExceptionHandler.java
+│   │                           │   ├── DEIException.java
+│   │                           │   ├── DEIExceptionDto.java
+│   │                           │   └── ErrorMessage.java
+│   │                           └── person
+│   │                               ├── PersonController.java
+│   │                               ├── domain
+│   │                               │   └── Person.java
+│   │                               ├── dto
+│   │                               │   └── PersonDto.java
+│   │                               ├── repository
+│   │                               │   └── PersonRepository.java
+│   │                               └── service
+│   │                                   └── PersonService.java
+│   └── resources
+│       ├── application.properties
+│       └── application.properties.example
+└── test
+    └── java
+        └── pt
+            └── ulisboa
+                └── tecnico
+                    └── rnl
+                        └── dei
+                            └── dms
+                                └── DmsApplicationTests.java
+
+24 directories, 15 files

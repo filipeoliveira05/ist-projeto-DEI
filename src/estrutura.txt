@@ -1,0 +1,27 @@
+.
+├── README.md
+├── backend
+│   ├── mvnw.cmd
+│   ├── pom.xml
+│   ├── src
+│   └── target
+├── docker-compose.yml
+├── estrutura.txt
+├── flake.lock
+├── flake.nix
+└── frontend
+    ├── README.md
+    ├── env.d.ts
+    ├── example.env
+    ├── index.html
+    ├── node_modules
+    ├── package-lock.json
+    ├── package.json
+    ├── public
+    ├── src
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    ├── tsconfig.node.json
+    └── vite.config.ts
+
+7 directories, 17 files

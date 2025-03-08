@@ -1,0 +1,32 @@
+.
+├── App.vue
+├── assets
+│   └── main.css
+├── components
+│   ├── DarkModeSwitch.vue
+│   ├── ErrorMessage.vue
+│   ├── LoadingOverlay.vue
+│   ├── NavBar.vue
+│   ├── TopBar.vue
+│   └── UtilBar.vue
+├── estrutura-frontend-src.txt
+├── main.ts
+├── models
+│   ├── DeiError.ts
+│   └── PersonDto.ts
+├── router
+│   └── index.ts
+├── services
+│   └── RemoteService.ts
+├── stores
+│   ├── appearance.ts
+│   └── role.ts
+└── views
+    ├── HomeView.vue
+    ├── people
+    │   ├── CreatePersonDialog.vue
+    │   └── PeopleView.vue
+    └── statistics
+        └── StatisticsView.vue
+
+9 directories, 20 files

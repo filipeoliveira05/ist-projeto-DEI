@@ -1,0 +1,17 @@
+.
+├── README.md
+├── env.d.ts
+├── estrutura-frontend.txt
+├── example.env
+├── index.html
+├── node_modules
+├── package-lock.json
+├── package.json
+├── public
+├── src
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+
+3 directories, 11 files
