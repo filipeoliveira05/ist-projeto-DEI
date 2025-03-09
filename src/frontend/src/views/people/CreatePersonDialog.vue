@@ -22,6 +22,9 @@
             required
             v-model="newPerson.type"
             ></v-select>
+
+          <v-text-field label="Email*" required v-model="newPerson.email"></v-text-field>
+          <v-text-field label="Telefone" required v-model="newPerson.phoneNumber"></v-text-field>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -65,16 +68,37 @@ const typeMappings = {
 
 const newPerson = ref<PersonDto>({
   name: '',
-  type: ''
+  istId: '',
+  type: '',
+  email: '',
+  status: true,
+  phoneNumber: ''
 })
 
 const savePerson = async () => {
-  newPerson.value.type = typeMappings[newPerson.value.type as keyof typeof typeMappings]
-  await RemoteService.createPerson(newPerson.value)
+  try {
+    newPerson.value.type = typeMappings[newPerson.value.type as keyof typeof typeMappings]
+    await RemoteService.createPerson(newPerson.value)
+    resetNewPerson()
+    emit('person-created')
+  } catch (error) {
+    console.error('Erro ao criar pessoa:', error)
+    newPerson.value.type = Object.keys(typeMappings).find(
+      key => typeMappings[key as keyof typeof typeMappings] === newPerson.value.type
+    ) || ''
+  }
+}
+
+
+const resetNewPerson = () => {
   newPerson.value = {
     name: '',
-    type: ''
+    istId: '',
+    type: '',
+    email: '',
+    status: true,
+    phoneNumber: ''
   }
-  emit('person-created')
 }
+
 </script>
