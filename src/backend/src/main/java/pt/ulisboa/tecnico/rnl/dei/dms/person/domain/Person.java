@@ -29,23 +29,44 @@ public class Person {
 	@Enumerated(EnumType.STRING)
     private PersonType type;
 
+	@Column(name = "email", nullable = false, unique = true)
+	private String email;
+
+	@Column(name = "status", nullable = false)
+	private boolean status = true; // true = active, false = inactive
+
+	@Column(name = "phone_number", nullable = false, unique = true) 
+	private String phoneNumber;
 
 	// TODO: maybe add more fields? ...or maybe not? what makes sense here?
+
 
 	protected Person() {
 	}
 
-	public Person(String name, String istId, PersonType type) {
+	public Person(String name, String istId, PersonType type, String email, boolean status, String phoneNumber) {
 		this.name = name;
 		this.istId = istId;
 		this.type = type;
+		this.email = email;
+		this.status = status;
+		this.phoneNumber = phoneNumber;
 	}
 
 	public Person(PersonDto personDto) {
 		this(personDto.name(), personDto.istId(),
-				PersonType.valueOf(personDto.type().toUpperCase()));
+				PersonType.valueOf(personDto.type().toUpperCase()), personDto.email(), personDto.status(), personDto.phoneNumber());
 		System.out.println("PersonDto: " + personDto);
 		System.out.println("PersonType: " + personDto.type());
 
+	}
+
+	public void updateFromDto(PersonDto personDto) {
+		this.name = personDto.name();
+		this.istId = personDto.istId();
+		this.type = PersonType.valueOf(personDto.type().toUpperCase());
+		this.email = personDto.email();
+		this.status = personDto.status();
+		this.phoneNumber = personDto.phoneNumber();
 	}
 }
