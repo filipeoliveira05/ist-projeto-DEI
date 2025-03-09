@@ -42,6 +42,11 @@
         Aluno
       </v-chip>
     </template>
+    <template v-slot:[`item.status`]="{ item }">
+      <v-chip :color="item.status ? 'green' : 'red'" text-color="white">
+        {{ item.status ? 'Ativo' : 'Inativo' }}
+      </v-chip>
+    </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon @click="editPerson(item)" class="mr-2">mdi-pencil</v-icon>
       <v-icon @click="deletePerson(item)">mdi-delete</v-icon>
@@ -79,6 +84,27 @@ const headers = [
     title: 'Tipo',
     key: 'type',
     value: 'type',
+    sortable: true,
+    filterable: true
+  },
+  {
+    title: 'Email',
+    key: 'email',
+    value: 'email',
+    sortable: true,
+    filterable: true
+  },
+  {
+    title: 'Status',
+    key: 'status',
+    value: 'status',
+    sortable: true,
+    filterable: true
+  },
+  {
+    title: 'Telefone',
+    key: 'phoneNumber',
+    value: 'phoneNumber',
     sortable: true,
     filterable: true
   },
