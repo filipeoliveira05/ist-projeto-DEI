@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.person.domain;
 
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -16,7 +18,7 @@ public class Person {
 	}
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "name", nullable = false)
@@ -37,9 +39,7 @@ public class Person {
 
 	@Column(name = "phone_number", nullable = false, unique = true) 
 	private String phoneNumber;
-
-	// TODO: maybe add more fields? ...or maybe not? what makes sense here?
-
+	
 
 	protected Person() {
 	}
