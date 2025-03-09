@@ -7,10 +7,11 @@ public enum ErrorMessage {
 	PERSON_NAME_NOT_VALID("O nome da pessoa especificado não é válido.", 1003),
 	IST_ID_NOT_VALID("O IST ID especificado não é válido.", 1004),
 	DUPLICATE_IST_ID("Já existe uma pessoa com o IST ID %s", 1005),
-	EMAIL_NOT_VALID("O email especificado não é válido.", 1006),
-	DUPLICATE_EMAIL("Já existe uma pessoa com o email %s", 1007),
-	PHONE_NUMBER_NOT_VALID("O número de telefone especificado não é válido.", 1008),
-	DUPLICATE_PHONE_NUMBER("Já existe uma pessoa com o número de telefone %s", 1009);
+	PERSON_TYPE_NOT_VALID("O tipo de pessoa especificado não é válido: %s", 1006),
+	EMAIL_NOT_VALID("O email especificado não é válido.", 1007),
+	DUPLICATE_EMAIL("Já existe uma pessoa com o email %s", 1008),
+	PHONE_NUMBER_NOT_VALID("O número de telefone especificado não é válido.", 1009),
+	DUPLICATE_PHONE_NUMBER("Já existe uma pessoa com o número de telefone %s", 1010);
 
 	private final String label;
 	private final int code;
