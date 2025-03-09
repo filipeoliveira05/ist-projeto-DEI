@@ -50,8 +50,8 @@ public class PersonController {
 	}
 
 	@PatchMapping("/people/{id}/deactivate")
-	public ResponseEntity<Void> deactivatePerson(@PathVariable long id) {
-		personService.deactivatePerson(id);
+	public ResponseEntity<Void> togglePersonStatus(@PathVariable long id, @PathVariable boolean status) {
+		personService.togglePersonStatus(id, status);
 		return ResponseEntity.noContent().build();
 	}
 
