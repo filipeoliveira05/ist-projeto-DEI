@@ -48,8 +48,8 @@
       </v-chip>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon @click="editPerson(item)" class="mr-2">mdi-pencil</v-icon>
-      <v-icon @click="deletePerson(item)">mdi-delete</v-icon>
+      <EditPersonDialog :person="item" @person-updated="getPeople" />
+      <DeletePersonDialog :person="item" @confirm-delete="deletePerson" />
     </template>
 
   </v-data-table>
@@ -60,6 +60,8 @@
 import type PeopleDto from '@/models/PeopleDto'
 import RemoteService from '@/services/RemoteService'
 import CreatePersonDialog from './CreatePersonDialog.vue'
+import EditPersonDialog from './EditPersonDialog.vue'
+import DeletePersonDialog from './DeletePersonDialog.vue'
 import { reactive, ref } from 'vue'
 
 let search = ref('')
@@ -132,9 +134,14 @@ const editPerson = (person: PeopleDto) => {
   console.log('Editing person:', person)
 }
 
-const deletePerson = (person: PeopleDto) => {
-  console.log('Deleting person:', person)
-}
+const deletePerson = async (person: PeopleDto) => {
+  try {
+    await RemoteService.deletePerson(person);
+    getPeople();
+  } catch (error) {
+    console.error("Erro ao apagar pessoa:", error);
+  }
+};
 
 
 const fuzzySearch = (value: string, search: string) => {
