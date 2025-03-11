@@ -82,7 +82,7 @@ const savePerson = async () => {
     resetNewPerson()
     emit('person-created')
   } catch (error) {
-    console.error('Erro ao criar pessoa:', error)
+    console.error('Error creating person:', error)
     newPerson.value.type = Object.keys(typeMappings).find(
       key => typeMappings[key as keyof typeof typeMappings] === newPerson.value.type
     ) || ''
