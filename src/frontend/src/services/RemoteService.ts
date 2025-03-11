@@ -18,6 +18,15 @@ export default class RemoteServices {
     return httpClient.post('/people', person)
   }
 
+  static async updatePerson(person: PersonDto): Promise<PersonDto> {  
+    const response = await httpClient.put<PersonDto>(`/people/${person.id}`, person);
+    return response.data;
+  } 
+
+  static async deletePerson(person: PersonDto): Promise<AxiosResponse> {
+    return httpClient.delete(`/people/${person.id}`)
+  }
+
   static async errorMessage(error: any): Promise<string> {
     if (error.message === 'Network Error') {
       return 'Unable to connect to the server'
@@ -28,7 +37,7 @@ export default class RemoteServices {
     }
   }
 
-  static async handleError(error: any): Promise<never> {
+  static async handleError(error: any): Promise<never> {  
     const deiErr = new DeiError(
       await RemoteServices.errorMessage(error),
       error.response?.data?.code ?? -1
@@ -37,7 +46,7 @@ export default class RemoteServices {
     appearance.pushError(deiErr)
     appearance.loading = false
     throw deiErr
-  }
+  }  
 }
 
 httpClient.interceptors.request.use((request) => request, RemoteServices.handleError)
