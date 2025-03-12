@@ -67,7 +67,13 @@ import { reactive, ref } from 'vue'
 let search = ref('')
 let loading = ref(true)
 const headers = [
-  { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
+  {
+    title: 'ID',
+    key: 'id',
+    value: 'id',
+    sortable: true,
+    filterable: false 
+  },
   {
     title: 'Nome',
     key: 'name',
