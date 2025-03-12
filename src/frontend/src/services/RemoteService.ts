@@ -19,6 +19,10 @@ export default class RemoteServices {
     return httpClient.get('/students')
   }
 
+  static async getStudentById(id: string | number): Promise<StudentDto> {
+    return httpClient.get(`/people/${id}`)
+  }    
+
   static async createPerson(person: PersonDto): Promise<PersonDto> {
     return httpClient.post('/people', person)
   }
