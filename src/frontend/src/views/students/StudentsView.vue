@@ -1,47 +1,65 @@
 <template>
-    <v-container>
-      <v-row align="center">
-        <v-col>
-          <h2 class="text-left ml-1">Listagem de Alunos</h2>
-        </v-col>
-      </v-row>
+  <v-container>
+    <v-row align="center">
+      <v-col>
+        <h2 class="text-left ml-1">Listagem de Alunos</h2>
+      </v-col>
+    </v-row>
+
+    <v-text-field
+      v-model="search"
+      label="Pesquisar"
+      prepend-inner-icon="mdi-magnify"
+      variant="outlined"
+      hide-details
+      single-line
+    ></v-text-field>
+
+    <v-select
+      v-model="selectedWorkflowStatus"
+      :items="workflowStatusOptions"
+      label="Filtrar por estado do workflow"
+      variant="outlined"
+      hide-details
+      clearable
+    ></v-select>
+
+    <v-data-table
+      :headers="headers"
+      :items="filteredStudents"
+      :search="search"
+      :loading="loading"
+      :custom-filter="fuzzySearch"
+      item-key="id"
+      class="text-left"
+      no-data-text="Sem alunos a apresentar."
+    >
+      <template v-slot:[`item.name`]="{ item }">
+        <router-link :to="`/students/${item.id}`" class="student-link">
+          {{ item.name }}
+        </router-link>
+      </template>
+
+      <template v-slot:[`item.workflowStatus`]="{ item }">
+        <v-chip :color="workflowStatusColors[item.workflowStatus] || 'gray'" text-color="white">
+          {{ workflowStatusLabels[item.workflowStatus] || 'Desconhecido' }}
+        </v-chip>
+      </template>
+    </v-data-table>
+  </v-container>
+</template>
+
+<style scoped>
+.student-link {
+  text-decoration: none;
+  color: inherit;
+}
+.student-link:hover {
+  text-decoration: underline;
+}
+</style>
+
   
-      <v-text-field
-        v-model="search"
-        label="Pesquisar"
-        prepend-inner-icon="mdi-magnify"
-        variant="outlined"
-        hide-details
-        single-line
-      ></v-text-field>
-  
-      <v-select
-        v-model="selectedWorkflowStatus"
-        :items="workflowStatusOptions"
-        label="Filtrar por estado do workflow"
-        variant="outlined"
-        hide-details
-        clearable
-      ></v-select>
-  
-      <v-data-table
-        :headers="headers"
-        :items="students"
-        :search="search"
-        :loading="loading"
-        :custom-filter="fuzzySearch"
-        item-key="id"
-        class="text-left"
-        no-data-text="Sem alunos a apresentar."
-      >
-        <template v-slot:[`item.workflowStatus`]="{ item }">
-          <v-chip :color="workflowStatusColors[item.workflowStatus] || 'gray'" text-color="white">
-            {{ workflowStatusLabels[item.workflowStatus] || 'Desconhecido' }}
-          </v-chip>
-        </template>
-      </v-data-table>
-    </v-container>
-  </template>
   
   <script setup lang="ts">
   import { reactive, ref, computed } from 'vue'
