@@ -28,6 +28,11 @@ public class PersonController {
 		return personService.getPeople();
 	}
 
+	@GetMapping("/students")
+	public List<PersonDto> getStudents() {
+		return personService.getPeopleByType("STUDENT");
+	}
+
 	@PostMapping("/people")
 	public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto personDto) {
 		PersonDto createdPerson = personService.createPerson(personDto);
