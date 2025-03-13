@@ -20,4 +20,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     Optional<Person> findByEmail(String email);
     List<Person> findByStatus(boolean status);
     Optional<Person> findByPhoneNumber(String phoneNumber);
+    List<Person> findByThesisWorkflowState(Person.ThesisWorkflowState thesisWorkflowState);
+    List<Person> findByDefenseWorkflowState(Person.DefenseWorkflowState defenseWorkflowState);
 }
