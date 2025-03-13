@@ -11,7 +11,8 @@ public enum ErrorMessage {
 	EMAIL_NOT_VALID("O email especificado não é válido.", 1007),
 	DUPLICATE_EMAIL("Já existe uma pessoa com o email %s", 1008),
 	PHONE_NUMBER_NOT_VALID("O número de telefone especificado não é válido.", 1009),
-	DUPLICATE_PHONE_NUMBER("Já existe uma pessoa com o número de telefone %s", 1010);
+	DUPLICATE_PHONE_NUMBER("Já existe uma pessoa com o número de telefone %s", 1010),
+	INVALID_WORKFLOW_STATE("O estado do fluxo de trabalho especificado não é válido: %s", 1011);
 
 	private final String label;
 	private final int code;
