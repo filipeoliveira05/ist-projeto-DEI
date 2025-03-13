@@ -36,6 +36,14 @@ export default class RemoteServices {
     return httpClient.delete(`/people/${person.id}`)
   }
 
+  static async updateThesisWorkflowState(id: number, state: string) {
+    return httpClient.patch(`/${id}/thesis-state/${state}`);
+}
+
+  static async updateDefenseWorkflowState(id: number, state: string) {
+    return httpClient.patch(`/${id}/defense-state/${state}`);
+  }
+
   static async errorMessage(error: any): Promise<string> {
     if (error.message === 'Network Error') {
       return 'Unable to connect to the server'
