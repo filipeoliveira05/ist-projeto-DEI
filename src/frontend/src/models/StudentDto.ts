@@ -3,7 +3,9 @@ export default class StudentDto {
     name?: string
     istId?: string
     email?: string
-    workflowStatus?: string
+    phoneNumber?: string
+    thesisWorkflowState?: string
+    defenseWorkflowState?: string
   
     constructor(obj?: Partial<StudentDto>) {
       Object.assign(this, obj)
