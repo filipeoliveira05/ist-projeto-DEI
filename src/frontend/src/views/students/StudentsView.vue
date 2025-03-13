@@ -16,9 +16,18 @@
     ></v-text-field>
 
     <v-select
-      v-model="selectedWorkflowStatus"
-      :items="workflowStatusOptions"
-      label="Filtrar por estado do workflow"
+      v-model="selectedThesisWorkflowState"
+      :items="thesisWorkflowStateOptions"
+      label="Filtrar por estado do workflow de tese"
+      variant="outlined"
+      hide-details
+      clearable
+    ></v-select>
+
+    <v-select
+      v-model="selectedDefenseWorkflowState"
+      :items="defenseWorkflowStateOptions"
+      label="Filtrar por estado doworkflow de defesa"
       variant="outlined"
       hide-details
       clearable
@@ -40,82 +49,77 @@
         </router-link>
       </template>
 
-      <template v-slot:[`item.workflowStatus`]="{ item }">
-        <v-chip :color="workflowStatusColors[item.workflowStatus] || 'gray'" text-color="white">
-          {{ workflowStatusLabels[item.workflowStatus] || 'Desconhecido' }}
+      <template v-slot:[`item.thesisWorkflowState`]="{ item }">
+        <v-chip :color="thesisWorkflowStateColors[item.thesisWorkflowState] || 'gray'" text-color="white">
+          {{ thesisWorkflowStateLabels[item.thesisWorkflowState] || 'Desconhecido' }}
         </v-chip>
       </template>
+
+      <template v-slot:[`item.defenseWorkflowState`]="{ item }">
+        <v-chip :color="defenseWorkflowStateColors[item.defenseWorkflowState] || 'gray'" text-color="white">
+          {{ defenseWorkflowStateLabels[item.defenseWorkflowState] || 'Desconhecido' }}
+        </v-chip>
+      </template>
+
     </v-data-table>
   </v-container>
+
+  <router-view @studentUpdated="handleStudentUpdated"></router-view>
 </template>
 
-<style scoped>
-.student-link {
-  text-decoration: none;
-  color: inherit;
-}
-.student-link:hover {
-  text-decoration: underline;
-}
-</style>
 
-  
-  
-  <script setup lang="ts">
-  import { reactive, ref, computed } from 'vue'
-  import RemoteService from '@/services/RemoteService'
-  import type StudentDto from '@/models/StudentDto'
-  
-  const search = ref('')
-  const loading = ref(true)
-  const students: StudentDto[] = reactive([])
-  const selectedWorkflowStatus = ref(null)
-  
-  const headers = [
-    { title: 'Nome', key: 'name', value: 'name', sortable: true },
-    { title: 'IST ID', key: 'istId', value: 'istId', sortable: true },
-    { title: 'Email', key: 'email', value: 'email', sortable: true },
-    { title: 'Estado do Workflow', key: 'workflowStatus', value: 'workflowStatus', sortable: true }
-  ]
-  
-  const workflowStatusOptions = [
-    { title: 'Planeamento', value: 'PLANNING' },
-    { title: 'Em Desenvolvimento', value: 'IN_PROGRESS' },
-    { title: 'Concluído', value: 'COMPLETED' }
-  ]
-  
-  const workflowStatusColors: Record<string, string> = {
-    PLANNING: 'blue',
-    IN_PROGRESS: 'orange',
-    COMPLETED: 'green'
+<script setup lang="ts">
+import { reactive, ref, computed } from 'vue'
+import { thesisWorkflowStateColors, thesisWorkflowStateLabels, thesisWorkflowStateOptions } from '../../constants/thesisWorkflowState'
+import { defenseWorkflowStateColors, defenseWorkflowStateLabels, defenseWorkflowStateOptions } from '../../constants/defenseWorkflowState'
+import RemoteService from '../../services/RemoteService'
+import type StudentDto from '../../models/StudentDto'
+
+const search = ref('')
+const loading = ref(true)
+const students: StudentDto[] = reactive([])
+const selectedThesisWorkflowState = ref(null)
+const selectedDefenseWorkflowState = ref(null)
+
+const headers = [
+  { title: 'Nome', key: 'name', sortable: true },
+  { title: 'IST ID', key: 'istId', sortable: true },
+  { title: 'Email', key: 'email', sortable: true },
+  { title: 'Estado do Workflow', key: 'thesisWorkflowState', sortable: true },
+  { title: 'Estado da Defesa', key: 'defenseWorkflowState', sortable: true }
+]
+
+
+async function getStudents() {
+  students.splice(0, students.length)
+  students.push(...(await RemoteService.getStudents()))
+  loading.value = false
+}
+
+const filteredStudents = computed(() => {
+  let result = students
+
+  if (selectedThesisWorkflowState.value) {
+    result = result.filter(student => student.thesisWorkflowState === selectedThesisWorkflowState.value)
   }
-  
-  const workflowStatusLabels: Record<string, string> = {
-    PLANNING: 'Planeamento',
-    IN_PROGRESS: 'Em Desenvolvimento',
-    COMPLETED: 'Concluído'
+
+  if (selectedDefenseWorkflowState.value) {
+    result = result.filter(student => student.defenseWorkflowState === selectedDefenseWorkflowState.value)
   }
-  
-  async function getStudents() {
-    students.splice(0, students.length)
-    students.push(...(await RemoteService.getStudents()))
-    loading.value = false
-  }
-  
-  const fuzzySearch = (value: string, search: string) => {
+
+  return result
+})
+
+const fuzzySearch = (value: string, search: string) => {
     if (!search) return true
     let searchRegex = new RegExp(search.split('').join('.*'), 'i')
     return searchRegex.test(value)
   }
-  
-  // Computed para filtrar os alunos pelo estado do workflow
-  const filteredStudents = computed(() => {
-    if (!selectedWorkflowStatus.value) {
-      return students
-    }
-    return students.filter(student => student.workflowStatus === selectedWorkflowStatus.value)
-  })
-  
-  getStudents()
-  </script>
-  
+
+async function handleStudentUpdated({ id, newState }) {
+  await getStudents()
+}
+
+getStudents()
+
+</script>
