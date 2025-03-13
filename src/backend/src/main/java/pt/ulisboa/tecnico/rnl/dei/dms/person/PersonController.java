@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
@@ -63,5 +64,17 @@ public class PersonController {
 	@DeleteMapping("/people/{id}")
 	public void deletePerson(@PathVariable long id) {
 		personService.deletePerson(id);
+	}
+
+	@PatchMapping("/{id}/thesis-state/{state}")
+	public ResponseEntity<Void> updateThesisWorkflowState(@PathVariable long id, @PathVariable String state) {
+		personService.updateThesisWorkflowState(id, state);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PatchMapping("/{id}/defense-state/{state}")
+	public ResponseEntity<Void> updateDefenseWorkflowState(@PathVariable long id, @PathVariable String state) {
+		personService.updateDefenseWorkflowState(id, state);
+		return ResponseEntity.noContent().build();
 	}
 }

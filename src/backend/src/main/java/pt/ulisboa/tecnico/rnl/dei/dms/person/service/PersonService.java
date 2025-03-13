@@ -29,6 +29,7 @@ public class PersonService {
 				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PERSON, Long.toString(id)));
 	}
 
+
 	@Transactional
 	public List<PersonDto> getPeople() {
 		return personRepository.findAll().stream()
@@ -36,9 +37,11 @@ public class PersonService {
 				.toList();
 	}
 
+
 	public boolean isValidEmail(String email) {
 		return EmailValidator.getInstance().isValid(email);
 	}
+
 
 	public static boolean isValidPhoneNumber(String phoneNumber, String region) {
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
@@ -49,6 +52,7 @@ public class PersonService {
             return false;
         }
     }
+
 
 	private void validatePerson(PersonDto personDto) {
 		if (personDto.name() == null || personDto.name().isBlank()) {
@@ -87,6 +91,7 @@ public class PersonService {
 
 	}
 
+
 	@Transactional
 	public PersonDto createPerson(PersonDto personDto) {
 		validatePerson(personDto);
@@ -95,16 +100,19 @@ public class PersonService {
 		return new PersonDto(personRepository.save(person));
 	}
 
+
 	@Transactional
 	public PersonDto getPerson(long id) {
 		return new PersonDto(fetchPersonOrThrow(id));
 	}
+
 
 	public List<PersonDto> getPeopleByType(String type) {
 		return personRepository.findByType(Person.PersonType.valueOf(type.toUpperCase())).stream()
 				.map(PersonDto::new)
 				.toList();
 	}
+
 
 	@Transactional
 	public PersonDto updatePerson(long id, PersonDto personDto) {
@@ -140,10 +148,37 @@ public class PersonService {
 		personRepository.save(person);
 	}
 
+
 	@Transactional
 	public void deletePerson(long id) {
 		fetchPersonOrThrow(id); // ensure exists
-
 		personRepository.deleteById(id);
 	}
+
+
+	@Transactional
+	public void updateThesisWorkflowState(long id, String newState) {
+		Person person = fetchPersonOrThrow(id);
+		try {
+			Person.ThesisWorkflowState state = Person.ThesisWorkflowState.valueOf(newState.toUpperCase());
+			person.setThesisWorkflowState(state);
+			personRepository.save(person);
+		} catch (IllegalArgumentException e) {
+			throw new DEIException(ErrorMessage.INVALID_WORKFLOW_STATE, newState);
+		}
+	}
+
+	
+	@Transactional
+	public void updateDefenseWorkflowState(long id, String newState) {
+		Person person = fetchPersonOrThrow(id);
+		try {
+			Person.DefenseWorkflowState state = Person.DefenseWorkflowState.valueOf(newState.toUpperCase());
+			person.setDefenseWorkflowState(state);
+			personRepository.save(person);
+		} catch (IllegalArgumentException e) {
+			throw new DEIException(ErrorMessage.INVALID_WORKFLOW_STATE, newState);
+		}
+	}
+
 }
