@@ -38,6 +38,9 @@
       <v-chip v-else-if="item.type === 'TEACHER'" color="blue" text-color="white">
         Professor
       </v-chip>
+      <v-chip v-else-if="item.type === 'SC'" color="orange" text-color="white">
+        SC
+      </v-chip>
       <v-chip v-else color="green" text-color="white">
         Aluno
       </v-chip>
@@ -57,8 +60,8 @@
 </template>
 
 <script setup lang="ts">
-import type PeopleDto from '@/models/PeopleDto'
-import RemoteService from '@/services/RemoteService'
+import type PeopleDto from '../../models/PersonDto'
+import RemoteService from '../../services/RemoteService'
 import CreatePersonDialog from './CreatePersonDialog.vue'
 import EditPersonDialog from './EditPersonDialog.vue'
 import DeletePersonDialog from './DeletePersonDialog.vue'
