@@ -45,8 +45,8 @@
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits } from 'vue'
-import RemoteService from '@/services/RemoteService'
-import type PersonDto from '@/models/people/PersonDto'
+import RemoteService from '../../services/RemoteService'
+import type PersonDto from '../../models/PersonDto'
 
 const dialog = ref(false)
 const confirmDialog = ref(false)
@@ -57,7 +57,7 @@ const emit = defineEmits(['person-updated'])
 
 const typeMappings = {
   "Aluno": "STUDENT",
-  "Professor": "PROFESSOR",
+  "Professor": "TEACHER",
   "Coordenador": "COORDINATOR",
   "Staff": "STAFF",
   "SC": "SC"
