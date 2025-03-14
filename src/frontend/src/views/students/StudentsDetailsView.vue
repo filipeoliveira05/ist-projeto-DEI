@@ -22,7 +22,7 @@
       label="Alterar Estado da Tese"
     ></v-select>
 
-    <v-btn @click="updateThesisWorkflowState" color="primary">
+    <v-btn @click="updateThesisWorkflowState" :disabled="!canTransitionThesisWorkflowState" color="primary">
       Atualizar Estado da Tese
     </v-btn>
 
@@ -43,10 +43,9 @@
       label="Alterar Estado da Defesa"
     ></v-select>
 
-    <v-btn @click="updateDefenseWorkflowState" color="primary">
+    <v-btn @click="updateDefenseWorkflowState" :disabled="!canTransitionDefenseWorkflowState" color="primary">
       Atualizar Estado da Defesa
     </v-btn>
-
 
     <br><br>
     <v-btn @click="goBack" variant="outlined" color="primary">
@@ -60,10 +59,10 @@
   </v-container>
 </template>
 
-
 <script setup lang="ts">
-import { ref, onMounted, defineEmits } from 'vue'
+import { computed, ref, onMounted, defineEmits } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useRoleStore } from '../../stores/role'
 import { thesisWorkflowStateColors, thesisWorkflowStateLabels, thesisWorkflowStateOptions } from '../../constants/thesisWorkflowState'
 import { defenseWorkflowStateColors, defenseWorkflowStateLabels, defenseWorkflowStateOptions } from '../../constants/defenseWorkflowState'
 import RemoteService from '../../services/RemoteService'
@@ -71,11 +70,12 @@ import type StudentDto from '../../models/StudentDto'
 
 const route = useRoute()
 const router = useRouter()
+const roleStore = useRoleStore()
 const student = ref<StudentDto | null>(null)
 const selectedThesisWorkflowState = ref('')
 const selectedDefenseWorkflowState = ref('')
 const emit = defineEmits(['studentUpdated'])
-
+const currentRole = computed(() => roleStore.currentRole)
 
 onMounted(async () => {
   try {
@@ -84,38 +84,73 @@ onMounted(async () => {
     selectedThesisWorkflowState.value = student.value?.thesisWorkflowState || 'NONE'
     selectedDefenseWorkflowState.value = student.value?.defenseWorkflowState || 'NONE'
   } catch (error) {
-    console.error('Error searching student:', error)
+    console.error('Error getting student:', error)
+  }
+})
+
+const canTransitionThesisWorkflowState = computed(() => {
+  if (!student.value) return false
+
+  const { thesisWorkflowState } = student.value
+  
+  switch (currentRole.value) {
+    case 'student':
+      return thesisWorkflowState === 'NONE' && selectedThesisWorkflowState.value?.toUpperCase() === 'PROPOSTA_JURI_SUBMETIDA'
+    case 'admin':
+      return thesisWorkflowState === 'PROPOSTA_JURI_SUBMETIDA' && selectedThesisWorkflowState.value?.toUpperCase() === 'APROVADO_PELO_SC'
+    case 'coordinator':
+      return (
+        (thesisWorkflowState === 'APROVADO_PELO_SC' && selectedThesisWorkflowState.value?.toUpperCase() === 'PRESIDENTE_JURI_ATRIBUIDO') ||
+        (thesisWorkflowState === 'PRESIDENTE_JURI_ATRIBUIDO' && selectedThesisWorkflowState.value?.toUpperCase() === 'DOCUMENTO_ASSINADO')
+      )
+    case 'staff':
+      return thesisWorkflowState === 'DOCUMENTO_ASSINADO' && selectedThesisWorkflowState.value?.toUpperCase() === 'SUBMETIDO_AO_FENIX'
+    default:
+      return false
+  }
+})
+
+const canTransitionDefenseWorkflowState = computed(() => {
+  if (!student.value) return false
+  if (student.value.thesisWorkflowState !== 'SUBMETIDO_AO_FENIX') return false 
+
+  const { defenseWorkflowState } = student.value
+
+  switch (currentRole.value) {
+    case 'coordinator':
+      return (
+        (defenseWorkflowState === 'NONE' && selectedDefenseWorkflowState.value?.toUpperCase() === 'DEFESA_AGENDADA') ||
+        (defenseWorkflowState === 'DEFESA_AGENDADA' && selectedDefenseWorkflowState.value?.toUpperCase() === 'EM_REVISAO') ||
+        (defenseWorkflowState === 'EM_REVISAO' && selectedDefenseWorkflowState.value?.toUpperCase() === 'SUBMETIDO_AO_FENIX')
+      )
+    default:
+      return false
   }
 })
 
 async function updateThesisWorkflowState() {
-  if (!student.value) return
-
+  if (!canTransitionThesisWorkflowState.value || !student.value) return
   try {
     await RemoteService.updateThesisWorkflowState(student.value.id, selectedThesisWorkflowState.value)
     student.value.thesisWorkflowState = selectedThesisWorkflowState.value
-
     emit('studentUpdated', { id: student.value.id, newState: selectedThesisWorkflowState.value })
   } catch (error) {
-    console.error('Error updating thesis workflow status:', error)
+    console.error('Error updating thesis workflow state:', error)
   }
 }
 
 async function updateDefenseWorkflowState() {
-  if (!student.value) return
-
+  if (!canTransitionDefenseWorkflowState.value || !student.value) return
   try {
     await RemoteService.updateDefenseWorkflowState(student.value.id, selectedDefenseWorkflowState.value)
     student.value.defenseWorkflowState = selectedDefenseWorkflowState.value
-
     emit('studentUpdated', { id: student.value.id, newState: selectedDefenseWorkflowState.value })
   } catch (error) {
-    console.error('Error updating defense workflow status:', error)
+    console.error('Error updating defense workflow state:', error)
   }
 }
 
 function goBack() {
   router.push('/students')
 }
-
 </script>

@@ -1,12 +1,7 @@
 <template>
   <v-app-bar color="secondary" :height="36" class="px-2">
     <v-toolbar-items>
-      <v-btn
-        href="https://dei.tecnico.ulisboa.pt/"
-        selected-class="no-active"
-        class="dei-title"
-        size="small"
-      >
+      <v-btn href="https://dei.tecnico.ulisboa.pt/" selected-class="no-active" class="dei-title" size="small">
         Departamento de Engenharia Informática
       </v-btn>
     </v-toolbar-items>
@@ -35,24 +30,18 @@
 
 <script setup lang="ts">
 import DarkModeSwitch from './DarkModeSwitch.vue'
-import { useRoleStore } from '@/stores/role'
-import { ref } from 'vue'
-import { watch } from 'vue'
+import { useRoleStore } from '../stores/role'
+import { computed } from 'vue'
+import { ref, watch } from 'vue'
 
 const roleStore = useRoleStore()
 
-const changeRole = (role: string) => {
-  roleStore.currentRole = role
+const changeRole = async (role: string) => {
+  roleStore.$patch({ currentRole: role })
 }
 
-const currentRole = ref(roleStore.currentRole)
+const currentRole = computed(() => roleStore.currentRole)
 
-watch(
-  () => roleStore.currentRole,
-  (newRole) => {
-    currentRole.value = newRole
-  }
-)
 </script>
 
 <style scoped>
