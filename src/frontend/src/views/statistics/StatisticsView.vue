@@ -1,22 +1,35 @@
-<!-- This is just a mockup of the StatisticsView.vue component -->
-<!-- It is not meant to be your final implementation -->
-<!-- You should replace this file with your own implementation -->
-<!-- You are free to explore the available javascript libraries for charts and graphs -->
-<!-- Some popular libraries are Chart.js, D3.js, vue-chartjs, ... -->
-<!-- You can also use Vuetify components to enhance the visual appeal of your statistics -->
-
 <template>
   <v-container>
     <v-row class="mb-6">
       <v-col cols="12">
-        <h1 class="text-h4 text-center mb-4">PhD Thesis and Defenses Statistics</h1>
+        <h1 class="text-h4 text-center mb-4">PhD - Estatísticas de Teses e Defesa</h1>
+      </v-col>
+    </v-row>
+
+    <!-- General Statistics -->
+    <v-row class="mb-6">
+      <v-col cols="12" md="6">
+        <v-card class="stat-card">
+          <v-card-text class="text-center">
+            <h3 class="text-h6">Número de Alunos</h3>
+            <p class="text-h4 font-weight-bold">{{ numberOfStudents }}</p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card class="stat-card">
+          <v-card-text class="text-center">
+            <h3 class="text-h6">Número de Professores</h3>
+            <p class="text-h4 font-weight-bold">{{ numberOfProfessors }}</p>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
 
     <!-- Thesis Progress Section -->
     <v-row class="mb-6">
       <v-col cols="12">
-        <h2 class="text-h5 mb-4">Thesis Progress</h2>
+        <h2 class="text-h5 mb-4">Workflow de Tese</h2>
         <v-row>
           <v-col
             v-for="(count, step) in thesisProgress"
@@ -30,7 +43,6 @@
               <v-card-text class="text-center">
                 <h3 class="text-h6">{{ step }}</h3>
                 <p class="text-h4 font-weight-bold">{{ count }}</p>
-                <p class="text-caption">students</p>
               </v-card-text>
             </v-card>
           </v-col>
@@ -41,7 +53,7 @@
     <!-- Defense Progress Section -->
     <v-row class="mb-6">
       <v-col cols="12">
-        <h2 class="text-h5 mb-4">Defense Progress</h2>
+        <h2 class="text-h5 mb-4">Workflow de Defesa</h2>
         <v-row>
           <v-col
             v-for="(count, step) in defenseProgress"
@@ -55,7 +67,6 @@
               <v-card-text class="text-center">
                 <h3 class="text-h6">{{ step }}</h3>
                 <p class="text-h4 font-weight-bold">{{ count }}</p>
-                <p class="text-caption">students</p>
               </v-card-text>
             </v-card>
           </v-col>
@@ -66,23 +77,40 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from "vue";
+import RemoteServices from "@/services/RemoteService";
 
-// Mock data for thesis progress
-const thesisProgress = ref({
-  'Jury Proposal Submitted': 12,
-  'Approved by SC': 8,
-  'Jury President Assigned': 15,
-  'Submitted to Fenix': 5,
-  'Verified by PGA': 3
-})
+const numberOfStudents = ref(0);
+const numberOfProfessors = ref(0);
+const thesisProgress = ref({});
+const defenseProgress = ref({});
 
-// Mock data for defense progress
-const defenseProgress = ref({
-  'Scheduled': 4,
-  'Completed': 3,
-  'Pending Review': 2
-})
+const fetchStatistics = async () => {
+  try {
+    const data = await RemoteServices.getStatistics();
+
+    numberOfStudents.value = data.numStudents;
+    numberOfProfessors.value = data.numTeachers;
+
+    thesisProgress.value = {
+      "Proposta de Júri Submetida": data.thesisProposalSubmitted,
+      "Aprovado pelo SC": data.thesisApproved,
+      "Presidente do Júri Atribuído": data.thesisPresidentAssigned,
+      "Documento Assinado": data.thesisSigned,
+      "Submetido ao Fenix": data.thesisSubmittedFenix,
+    };
+
+    defenseProgress.value = {
+      "Defesa Agendada": data.defenseScheduled,
+      "Em Revisão": data.defenseReview,
+      "Submetido ao Fenix": data.defenseSubmittedFenix,
+    };
+  } catch (error) {
+    console.error("Error fetching statistics:", error);
+  }
+};
+
+onMounted(fetchStatistics);
 </script>
 
 <style scoped>
