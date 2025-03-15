@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.person;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,16 @@ public class PersonController {
 	@GetMapping("/students")
 	public List<PersonDto> getStudents() {
 		return personService.getPeopleByType("STUDENT");
+	}
+
+	@GetMapping("/teachers")
+	public List<PersonDto> getTeachers() {
+		return personService.getPeopleByType("TEACHER");
+	}
+
+	@GetMapping("/statistics")
+	public ResponseEntity<Map<String, Long>> getStatistics() {
+		return ResponseEntity.ok(personService.getStatistics());
 	}
 
 	@PostMapping("/people")
@@ -77,4 +88,11 @@ public class PersonController {
 		personService.updateDefenseWorkflowState(id, state);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PatchMapping("/people/{id}/jury")
+	public ResponseEntity<Void> submitJuryProposal(@PathVariable long id, @RequestBody List<Long> teacherIds) {
+		personService.submitJuryProposal(id, teacherIds);
+		return ResponseEntity.noContent().build();
+	}
+
 }

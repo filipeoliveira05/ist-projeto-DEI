@@ -21,7 +21,15 @@ export default class RemoteServices {
 
   static async getStudentById(id: string | number): Promise<StudentDto> {
     return httpClient.get(`/people/${id}`)
-  }    
+  }
+  
+  static async getTeachers(): Promise<PersonDto[]> {
+    return httpClient.get('/teachers')
+  }
+
+  static async getStatistics(): Promise <any> {
+    return httpClient.get('/statistics')
+  }
 
   static async createPerson(person: PersonDto): Promise<PersonDto> {
     return httpClient.post('/people', person)
@@ -42,6 +50,10 @@ export default class RemoteServices {
 
   static async updateDefenseWorkflowState(id: number, state: string) {
     return httpClient.patch(`/${id}/defense-state/${state}`);
+  }
+
+  static async submitJuryProposal(personId: number, teacherIds: number[]): Promise<void> {
+    return httpClient.patch(`/people/${personId}/jury`, teacherIds);
   }
 
   static async errorMessage(error: any): Promise<string> {
