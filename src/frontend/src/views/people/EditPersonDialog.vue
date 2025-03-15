@@ -90,7 +90,7 @@ const updatePerson = async () => {
     dialog.value = false;
     confirmDialog.value = false;
   } catch (error) {
-    console.error("Errr updating person:", error);
+    console.error("Error updating person:", error);
   }
 };
 </script>

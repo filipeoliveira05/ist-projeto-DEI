@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="mb-6">
       <v-col cols="12">
-        <h1 class="text-h4 text-center mb-4">PhD - Estatísticas de Teses e Defesa</h1>
+        <h1 class="text text-center ml-1">PhD - Estatísticas de Teses e Defesa</h1>
       </v-col>
     </v-row>
 
