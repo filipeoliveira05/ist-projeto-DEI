@@ -6,7 +6,7 @@
       </v-btn>
     </v-toolbar-items>
     <v-spacer />
-    <span>Current Role: {{ currentRole }}</span>
+    <span>Autenticado como: {{ currentRole }}</span>
     <v-spacer />
     <v-toolbar-items class="align-center">
       <DarkModeSwitch />
