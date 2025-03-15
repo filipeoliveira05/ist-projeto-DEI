@@ -1,3 +1,12 @@
+export const thesisWorkflowStateOrder: Record<string, number> = {
+  NONE: 0,
+  PROPOSTA_JURI_SUBMETIDA: 1,
+  APROVADO_PELO_SC: 2,
+  PRESIDENTE_JURI_ATRIBUIDO: 3,
+  DOCUMENTO_ASSINADO: 4,
+  SUBMETIDO_AO_FENIX: 5
+}
+
 export const thesisWorkflowStateColors: Record<string, string> = {
   NONE: 'gray',
   PROPOSTA_JURI_SUBMETIDA: 'blue',
