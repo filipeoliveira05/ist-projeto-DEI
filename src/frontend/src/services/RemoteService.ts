@@ -56,6 +56,10 @@ export default class RemoteServices {
     return httpClient.patch(`/people/${personId}/jury`, teacherIds);
   }
 
+  static async getLogs(): Promise<any> {
+    return httpClient.get('/logs');
+  }
+
   static async errorMessage(error: any): Promise<string> {
     if (error.message === 'Network Error') {
       return 'Unable to connect to the server'
