@@ -70,8 +70,8 @@
 
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
-import { thesisWorkflowStateColors, thesisWorkflowStateLabels, thesisWorkflowStateOptions } from '../../constants/thesisWorkflowState'
-import { defenseWorkflowStateColors, defenseWorkflowStateLabels, defenseWorkflowStateOptions } from '../../constants/defenseWorkflowState'
+import { thesisWorkflowStateOrder, thesisWorkflowStateColors, thesisWorkflowStateLabels, thesisWorkflowStateOptions } from '../../constants/thesisWorkflowState'
+import { defenseWorkflowStateOrder, defenseWorkflowStateColors, defenseWorkflowStateLabels, defenseWorkflowStateOptions } from '../../constants/defenseWorkflowState'
 import RemoteService from '../../services/RemoteService'
 import type StudentDto from '../../models/StudentDto'
 
@@ -85,7 +85,7 @@ const headers = [
   { title: 'Nome', key: 'name', sortable: true },
   { title: 'IST ID', key: 'istId', sortable: true },
   { title: 'Email', key: 'email', sortable: true },
-  { title: 'Estado do Workflow', key: 'thesisWorkflowState', sortable: true },
+  { title: 'Estado da Tese', key: 'thesisWorkflowState', sortable: true },
   { title: 'Estado da Defesa', key: 'defenseWorkflowState', sortable: true }
 ]
 
@@ -114,7 +114,7 @@ const fuzzySearch = (value: string, search: string) => {
     if (!search) return true
     let searchRegex = new RegExp(search.split('').join('.*'), 'i')
     return searchRegex.test(value)
-  }
+}
 
 async function handleStudentUpdated({ id, newState }) {
   await getStudents()
