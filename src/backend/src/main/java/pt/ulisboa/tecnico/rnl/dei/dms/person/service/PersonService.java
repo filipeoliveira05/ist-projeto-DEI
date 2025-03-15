@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.person.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -179,6 +181,47 @@ public class PersonService {
 		} catch (IllegalArgumentException e) {
 			throw new DEIException(ErrorMessage.INVALID_WORKFLOW_STATE, newState);
 		}
+	}
+
+	@Transactional
+	public void submitJuryProposal(long personId, List<Long> teacherIds) {
+		Person person = fetchPersonOrThrow(personId);
+		
+		if (person.getType() != Person.PersonType.STUDENT) {
+			throw new DEIException(ErrorMessage.PERSON_NOT_A_STUDENT);
+		}
+
+		List<Person> teachers = teacherIds.stream()
+			.map(this::fetchPersonOrThrow)
+			.filter(p -> p.getType() == Person.PersonType.TEACHER)
+			.toList();
+
+		person.getJuryTeachers().clear();
+		person.getJuryTeachers().addAll(teachers);
+
+		person.setThesisWorkflowState(Person.ThesisWorkflowState.PROPOSTA_JURI_SUBMETIDA);
+		personRepository.save(person);
+	}
+
+	public Map<String, Long> getStatistics() {
+        Map<String, Long> stats = new HashMap<>();
+
+        stats.put("numStudents", personRepository.countByType(Person.PersonType.STUDENT));
+        stats.put("numTeachers", personRepository.countByType(Person.PersonType.TEACHER));
+        
+        stats.put("thesisNone", personRepository.countByThesisWorkflowState(Person.ThesisWorkflowState.NONE));
+		stats.put("thesisProposalSubmitted", personRepository.countByThesisWorkflowState(Person.ThesisWorkflowState.PROPOSTA_JURI_SUBMETIDA));
+        stats.put("thesisApproved", personRepository.countByThesisWorkflowState(Person.ThesisWorkflowState.APROVADO_PELO_SC));
+        stats.put("thesisPresidentAssigned", personRepository.countByThesisWorkflowState(Person.ThesisWorkflowState.PRESIDENTE_JURI_ATRIBUIDO));
+        stats.put("thesisSigned", personRepository.countByThesisWorkflowState(Person.ThesisWorkflowState.DOCUMENTO_ASSINADO));
+        stats.put("thesisSubmittedFenix", personRepository.countByThesisWorkflowState(Person.ThesisWorkflowState.SUBMETIDO_AO_FENIX));
+        
+		stats.put("defenseNone", personRepository.countByDefenseWorkflowState(Person.DefenseWorkflowState.NONE));
+        stats.put("defenseScheduled", personRepository.countByDefenseWorkflowState(Person.DefenseWorkflowState.DEFESA_AGENDADA));
+        stats.put("defenseReview", personRepository.countByDefenseWorkflowState(Person.DefenseWorkflowState.EM_REVISAO));
+        stats.put("defenseSubmittedFenix", personRepository.countByDefenseWorkflowState(Person.DefenseWorkflowState.SUBMETIDO_AO_FENIX));
+        
+        return stats;
 	}
 
 }
