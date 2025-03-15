@@ -11,5 +11,6 @@ const navbarItems = [
   { name: 'Alunos', path: '/students', icon: 'mdi-account-multiple' },
   { name: 'Pessoal', path: '/people', icon: 'mdi-account-group' },
   { name: 'Estatísticas', path: '/statistics', icon: 'mdi-chart-bar' },
+  { name: 'Logs', path: '/logs', icon: 'mdi-file-document' }
 ]
 </script>
