@@ -4,6 +4,9 @@
       <v-btn href="https://dei.tecnico.ulisboa.pt/" selected-class="no-active" class="dei-title" size="small">
         Departamento de Engenharia Informática
       </v-btn>
+      <v-btn href="/" icon>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
     </v-toolbar-items>
     <v-spacer />
     <span>Autenticado como: {{ currentRole }}</span>

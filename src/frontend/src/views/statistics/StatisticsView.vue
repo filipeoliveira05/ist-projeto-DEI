@@ -2,23 +2,25 @@
   <v-container>
     <v-row class="mb-6">
       <v-col cols="12">
-        <h1 class="text text-center ml-1">PhD - Estatísticas de Teses e Defesa</h1>
+        <h1 class="text-h3 text-center ml-1 font-weight-bold">Estatísticas do Sistema</h1>
       </v-col>
     </v-row>
 
     <!-- General Statistics -->
-    <v-row class="mb-6">
-      <v-col cols="12" md="6">
-        <v-card class="stat-card">
+    <v-row class="mb-6" justify="center">
+      <v-col cols="12" md="6" lg="4">
+        <v-card class="stat-card bg-success text-white">
           <v-card-text class="text-center">
+            <v-icon large class="mb-3">mdi-account-multiple</v-icon>
             <h3 class="text-h6">Número de Alunos</h3>
             <p class="text-h4 font-weight-bold">{{ numberOfStudents }}</p>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6">
-        <v-card class="stat-card">
+      <v-col cols="12" md="6" lg="4">
+        <v-card class="stat-card bg-primary text-white">
           <v-card-text class="text-center">
+            <v-icon large class="mb-3">mdi-account-tie</v-icon>
             <h3 class="text-h6">Número de Professores</h3>
             <p class="text-h4 font-weight-bold">{{ numberOfProfessors }}</p>
           </v-card-text>
@@ -27,50 +29,48 @@
     </v-row>
 
     <!-- Thesis Progress Section -->
-    <v-row class="mb-6">
+    <v-row class="mb-6" justify="center">
       <v-col cols="12">
-        <h2 class="text-h5 mb-4">Workflow de Tese</h2>
-        <v-row>
-          <v-col
-            v-for="(count, step) in thesisProgress"
-            :key="step"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >
-            <v-card class="stat-card">
-              <v-card-text class="text-center">
-                <h3 class="text-h6">{{ step }}</h3>
-                <p class="text-h4 font-weight-bold">{{ count }}</p>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+        <h2 class="text-h4 mb-4 font-weight-bold">Workflow de Tese</h2>
+      </v-col>
+      <v-col
+        v-for="(count, step) in thesisProgress"
+        :key="step"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
+      >
+        <v-card class="stat-card">
+          <v-card-text class="text-center">
+            <v-icon large class="mb-3">mdi-file-document</v-icon>
+            <h3 class="text-h6">{{ step }}</h3>
+            <p class="text-h4 font-weight-bold">{{ count }}</p>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
 
     <!-- Defense Progress Section -->
-    <v-row class="mb-6">
+    <v-row class="mb-6" justify="center">
       <v-col cols="12">
-        <h2 class="text-h5 mb-4">Workflow de Defesa</h2>
-        <v-row>
-          <v-col
-            v-for="(count, step) in defenseProgress"
-            :key="step"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >
-            <v-card class="stat-card">
-              <v-card-text class="text-center">
-                <h3 class="text-h6">{{ step }}</h3>
-                <p class="text-h4 font-weight-bold">{{ count }}</p>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+        <h2 class="text-h4 mb-4 font-weight-bold">Workflow de Defesa</h2>
+      </v-col>
+      <v-col
+        v-for="(count, step) in defenseProgress"
+        :key="step"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
+      >
+        <v-card class="stat-card">
+          <v-card-text class="text-center">
+            <v-icon large class="mb-3">mdi-shield-check</v-icon>
+            <h3 class="text-h6">{{ step }}</h3>
+            <p class="text-h4 font-weight-bold">{{ count }}</p>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -116,10 +116,44 @@ onMounted(fetchStatistics);
 <style scoped>
 .stat-card {
   transition: transform 0.2s ease-in-out;
+  border-radius: 12px;
+  height: 100%;
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card .v-card-text {
+  padding: 16px;
+}
+
+.stat-card .v-icon {
+  color: white;
+}
+
+.bg-success {
+  background-color: #4CAF50 !important;
+}
+
+.bg-primary {
+  background-color: #0D47A1 !important;
+}
+
+.text-h4, .text-h6 {
+  font-weight: bold;
+}
+
+.text-h4 {
+  font-size: 2.5rem;
+}
+
+.text-h6 {
+  font-size: 1.25rem;
+}
+
+.mb-6 {
+  margin-bottom: 32px;
 }
 </style>

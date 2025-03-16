@@ -1,14 +1,13 @@
 <template>
   <v-row align="center">
     <v-col>
-      <h2 class="text-left ml-1">Listagem de Pessoas</h2>
+      <h2 class="text-left text-h4 font-weight-bold ml-1">Listagem de Pessoas</h2>
     </v-col>
     <v-col cols="auto">
       <CreatePersonDialog @person-created="getPeople" />
     </v-col>
   </v-row>
-
-
+  <br>
   <v-text-field
     v-model="search"
     label="Search"

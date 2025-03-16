@@ -1,21 +1,25 @@
 <template>
-  <v-container>
-    <v-row>
+  <v-container fluid>
+    <v-row class="mb-6">
       <v-col cols="12">
-        <h1 class="text ml-1">System Logs</h1>
-
-        <br>
+        <h1 class="text-h3 text-center font-weight-bold">System Logs</h1>
+        <br />
+        <br />
 
         <!-- Filters -->
-        <v-row class="mb-4">
+        <v-row class="mb-4" align="center">
           <v-col cols="12" md="4">
             <v-select
               v-model="selectedType"
               :items="logTypes"
               label="Filter by action"
               clearable
+              dense
+              outlined
+              class="filter-select"
             ></v-select>
           </v-col>
+
           <v-col cols="12" md="4">
             <v-menu v-model="dateMenu" :close-on-content-click="false" transition="scale-transition">
               <template v-slot:activator="{ props }">
@@ -25,15 +29,19 @@
                   readonly
                   v-bind="props"
                   clearable
-                  @click:clear="selectedDate = null"
+                  outlined
+                  dense
+                  class="filter-select"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="selectedDate" @update:modelValue="dateMenu = false"></v-date-picker>
+              <v-date-picker v-model="selectedDate" @update:modelValue="dateMenu = false" @click:date="dateMenu = false" />
             </v-menu>
           </v-col>
+
           <v-col cols="12" md="4" class="text-right">
             <v-btn color="primary" @click="exportCSV">Export CSV</v-btn>
           </v-col>
+
         </v-row>
 
         <!-- Logs table -->
@@ -42,7 +50,11 @@
           :headers="headers"
           :items="filteredLogs"
           :items-per-page-options="[5, 10, 20]"
-          class="text-left"
+          class="text-left elevation-1"
+          item-value="timestamp"
+          item-key="timestamp"
+          dense
+          hide-default-footer
         >
           <template v-slot:item.timestamp="{ item }">
             {{ new Date(item.timestamp).toLocaleString() }}
@@ -64,7 +76,6 @@ import { ref, computed, onMounted } from "vue";
 import RemoteServices from "@/services/RemoteService";
 
 const logs = ref([]);
-const search = ref("");
 const selectedDate = ref(null);
 const selectedType = ref(null);
 const dateMenu = ref(false);
@@ -140,3 +151,69 @@ const exportCSV = () => {
   document.body.removeChild(link);
 };
 </script>
+
+<style scoped>
+.filter-select {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.text-h3 {
+  color: #000000;
+}
+
+.v-btn {
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.v-btn:hover {
+  background-color: #1976d2;
+}
+
+.export-btn {
+  border-radius: 0;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: none;
+}
+
+.v-data-table {
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.elevation-1 {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.v-data-table .v-data-table-header {
+  background-color: #f1f1f1;
+  color: #0d47a1;
+  font-weight: bold;
+}
+
+.v-data-table .v-data-table__wrapper {
+  margin-top: 20px;
+}
+
+.v-data-table th, .v-data-table td {
+  padding: 10px 15px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.v-data-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.v-data-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.v-text-field, .v-select {
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+</style>

@@ -2,10 +2,10 @@
   <v-container>
     <v-row align="center">
       <v-col>
-        <h2 class="text-left ml-1">Listagem de Alunos</h2>
+        <h2 class="text-left text-h4 font-weight-bold ml-1">Listagem de Alunos</h2>
       </v-col>
     </v-row>
-
+    <br>
     <v-text-field
       v-model="search"
       label="Pesquisar"
@@ -13,8 +13,8 @@
       variant="outlined"
       hide-details
       single-line
+      class="mb-2"
     ></v-text-field>
-
     <v-select
       v-model="selectedThesisWorkflowState"
       :items="thesisWorkflowStateOptions"
@@ -22,8 +22,8 @@
       variant="outlined"
       hide-details
       clearable
+      class="mb-1"
     ></v-select>
-
     <v-select
       v-model="selectedDefenseWorkflowState"
       :items="defenseWorkflowStateOptions"
@@ -31,6 +31,7 @@
       variant="outlined"
       hide-details
       clearable
+      class="mb-3"
     ></v-select>
 
     <v-data-table
