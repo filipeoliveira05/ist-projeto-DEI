@@ -82,6 +82,19 @@ public class Person {
         this.phoneNumber = personDto.phoneNumber();
     }
 
+    public String getDetails() {
+        return String.format(
+            "<b>ID:</b> %d, <b>Nome:</b> %s, <b>IST ID:</b> %s, <b>Tipo:</b> %s, <b>Email:</b> %s, <b>Telefone:</b> %s, <b>Status:</b> %s",
+            this.id,
+            this.name,
+            this.istId,
+            this.type,
+            this.email,
+            this.phoneNumber,
+            this.status ? "Ativo" : "Inativo"
+        );
+    }    
+
     public void setThesisWorkflowState(ThesisWorkflowState newState) {
         this.thesisWorkflowState = newState;
     }
