@@ -9,11 +9,15 @@
 │   ├── NavBar.vue
 │   ├── TopBar.vue
 │   └── UtilBar.vue
+├── constants
+│   ├── defenseWorkflowState.ts
+│   └── thesisWorkflowState.ts
 ├── estrutura-frontend-src.txt
 ├── main.ts
 ├── models
 │   ├── DeiError.ts
-│   └── PersonDto.ts
+│   ├── PersonDto.ts
+│   └── StudentDto.ts
 ├── router
 │   └── index.ts
 ├── services
@@ -23,10 +27,17 @@
 │   └── role.ts
 └── views
     ├── HomeView.vue
+    ├── logs
+    │   └── LogsView.vue
     ├── people
     │   ├── CreatePersonDialog.vue
+    │   ├── DeletePersonDialog.vue
+    │   ├── EditPersonDialog.vue
     │   └── PeopleView.vue
-    └── statistics
-        └── StatisticsView.vue
+    ├── statistics
+    │   └── StatisticsView.vue
+    └── students
+        ├── StudentsDetailsView.vue
+        └── StudentsView.vue
 
-9 directories, 20 files
+12 directories, 28 files

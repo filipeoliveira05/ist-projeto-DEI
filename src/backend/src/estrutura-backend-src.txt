@@ -16,6 +16,11 @@
 │   │                           │   ├── DEIException.java
 │   │                           │   ├── DEIExceptionDto.java
 │   │                           │   └── ErrorMessage.java
+│   │                           ├── log
+│   │                           │   ├── LogController.java
+│   │                           │   ├── LogEntry.java
+│   │                           │   ├── LogRepository.java
+│   │                           │   └── LogService.java
 │   │                           └── person
 │   │                               ├── PersonController.java
 │   │                               ├── domain
@@ -39,4 +44,4 @@
                             └── dms
                                 └── DmsApplicationTests.java
 
-24 directories, 15 files
+25 directories, 19 files

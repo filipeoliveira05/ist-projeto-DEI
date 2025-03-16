@@ -12,6 +12,7 @@
 └── frontend
     ├── README.md
     ├── env.d.ts
+    ├── estrutura-frontend.txt
     ├── example.env
     ├── index.html
     ├── node_modules
@@ -24,4 +25,4 @@
     ├── tsconfig.node.json
     └── vite.config.ts
 
-7 directories, 17 files
+7 directories, 18 files
