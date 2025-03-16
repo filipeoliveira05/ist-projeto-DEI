@@ -176,7 +176,9 @@ public class PersonService {
 			Person.ThesisWorkflowState state = Person.ThesisWorkflowState.valueOf(newState.toUpperCase());
 			person.setThesisWorkflowState(state);
 			personRepository.save(person);
-			String logMessage = "Aluno <b>" + person.getName() + "</b> (" + person.getIstId() + "): Estado do <b>Workflow</b> de <b>Tese</b> alterado de <b>" + oldState + "</b> para <b>" + newState + "</b>";
+			String oldStateStr = Person.thesisWorkflowStateToString(oldState);
+        	String newStateStr = Person.thesisWorkflowStateToString(state);
+			String logMessage = "Aluno <b>" + person.getName() + "</b> (" + person.getIstId() + "): Estado do <b>Workflow</b> de <b>Tese</b> alterado de <b>" + oldStateStr + "</b> para <b>" + newStateStr + "</b>";
 			logService.log(LogType.UPDATE_THESIS_WORKFLOW, logMessage);
 		} catch (IllegalArgumentException e) {
 			throw new DEIException(ErrorMessage.INVALID_WORKFLOW_STATE, newState);
@@ -192,7 +194,9 @@ public class PersonService {
 			Person.DefenseWorkflowState state = Person.DefenseWorkflowState.valueOf(newState.toUpperCase());
 			person.setDefenseWorkflowState(state);
 			personRepository.save(person);
-			String logMessage = "Aluno <b>" + person.getName() + "</b> (" + person.getIstId() + "): Estado do <b>Workflow</b> de <b>Defesa</b> alterado de <b>" + oldState + "</b> para <b>" + newState + "</b>";
+			String oldStateStr = Person.defenseWorkflowStateToString(oldState);
+        	String newStateStr = Person.defenseWorkflowStateToString(state);
+			String logMessage = "Aluno <b>" + person.getName() + "</b> (" + person.getIstId() + "): Estado do <b>Workflow</b> de <b>Defesa</b> alterado de <b>" + oldStateStr + "</b> para <b>" + newStateStr + "</b>";
 			logService.log(LogType.UPDATE_DEFENSE_WORKFLOW, logMessage);
 		} catch (IllegalArgumentException e) {
 			throw new DEIException(ErrorMessage.INVALID_WORKFLOW_STATE, newState);

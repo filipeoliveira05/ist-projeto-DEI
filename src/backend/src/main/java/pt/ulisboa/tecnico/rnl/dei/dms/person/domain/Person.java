@@ -96,4 +96,38 @@ public class Person {
     public void setDefenseWorkflowState(DefenseWorkflowState newState) {
         this.defenseWorkflowState = newState;
     }
+
+    public static String thesisWorkflowStateToString(ThesisWorkflowState state) {
+        switch (state) {
+            case NONE:
+                return "Nenhum";
+            case PROPOSTA_JURI_SUBMETIDA:
+                return "Proposta de Júri Submetida";
+            case APROVADO_PELO_SC:
+                return "Aprovado pelo SC";
+            case PRESIDENTE_JURI_ATRIBUIDO:
+                return "Presidente do Júri Atribuído";
+            case DOCUMENTO_ASSINADO:
+                return "Documento Assinado";
+            case SUBMETIDO_AO_FENIX:
+                return "Submetido ao Fénix";
+            default:
+                return state.name().toLowerCase();
+        }
+    }
+
+    public static String defenseWorkflowStateToString(DefenseWorkflowState state) {
+        switch (state) {
+            case NONE:
+                return "Nenhum";
+            case DEFESA_AGENDADA:
+                return "Defesa Agendada";
+            case EM_REVISAO:
+                return "Em Revisão";
+            case SUBMETIDO_AO_FENIX:
+                return "Submetido ao Fénix";
+            default:
+                return state.name().toLowerCase();
+        }
+    }
 }
