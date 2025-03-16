@@ -158,14 +158,6 @@ public class PersonService {
 		return updatedPerson;
 	}
 	
-	
-
-	@Transactional
-	public void togglePersonStatus(long id, boolean status) {
-		Person person = fetchPersonOrThrow(id);
-		person.setStatus(status);
-		personRepository.save(person);
-	}
 
 
 	@Transactional

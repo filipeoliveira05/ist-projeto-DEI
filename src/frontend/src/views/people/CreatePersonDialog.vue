@@ -51,8 +51,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type PersonDto from '@/models/people/PersonDto'
-import RemoteService from '@/services/RemoteService'
+import type PersonDto from '../../models/PersonDto'
+import RemoteService from '../../services/RemoteService'
 
 const dialog = ref(false)
 
@@ -71,7 +71,6 @@ const newPerson = ref<PersonDto>({
   istId: '',
   type: '',
   email: '',
-  status: true,
   phoneNumber: ''
 })
 
@@ -96,7 +95,6 @@ const resetNewPerson = () => {
     istId: '',
     type: '',
     email: '',
-    status: true,
     phoneNumber: ''
   }
 }

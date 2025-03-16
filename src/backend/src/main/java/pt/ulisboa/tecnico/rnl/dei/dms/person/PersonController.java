@@ -66,12 +66,6 @@ public class PersonController {
 		return personService.updatePerson(id, personDto);
 	}
 
-	@PatchMapping("/people/{id}/deactivate")
-	public ResponseEntity<Void> togglePersonStatus(@PathVariable long id, @PathVariable boolean status) {
-		personService.togglePersonStatus(id, status);
-		return ResponseEntity.noContent().build();
-	}
-
 	@DeleteMapping("/people/{id}")
 	public void deletePerson(@PathVariable long id) {
 		personService.deletePerson(id);

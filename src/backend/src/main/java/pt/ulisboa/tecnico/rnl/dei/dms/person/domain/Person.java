@@ -39,9 +39,6 @@ public class Person {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "status", nullable = false)
-    private boolean status = true; // true = ativo, false = inativo
-
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
@@ -56,12 +53,11 @@ public class Person {
     protected Person() {
     }
 
-    public Person(String name, String istId, PersonType type, String email, boolean status, String phoneNumber) {
+    public Person(String name, String istId, PersonType type, String email, String phoneNumber) {
         this.name = name;
         this.istId = istId;
         this.type = type;
         this.email = email;
-        this.status = status;
         this.phoneNumber = phoneNumber;
         this.thesisWorkflowState = ThesisWorkflowState.NONE;
         this.defenseWorkflowState = DefenseWorkflowState.NONE;
@@ -70,7 +66,7 @@ public class Person {
     public Person(PersonDto personDto) {
         this(personDto.name(), personDto.istId(),
 		PersonType.valueOf(personDto.type().toUpperCase()),
-		personDto.email(), personDto.status(), personDto.phoneNumber());
+		personDto.email(), personDto.phoneNumber());
     }
 
     public void updateFromDto(PersonDto personDto) {
@@ -78,20 +74,18 @@ public class Person {
         this.istId = personDto.istId();
         this.type = PersonType.valueOf(personDto.type().toUpperCase());
         this.email = personDto.email();
-        this.status = personDto.status();
         this.phoneNumber = personDto.phoneNumber();
     }
 
     public String getDetails() {
         return String.format(
-            "<b>ID:</b> %d, <b>Nome:</b> %s, <b>IST ID:</b> %s, <b>Tipo:</b> %s, <b>Email:</b> %s, <b>Telefone:</b> %s, <b>Status:</b> %s",
+            "<b>ID:</b> %d, <b>Nome:</b> %s, <b>IST ID:</b> %s, <b>Tipo:</b> %s, <b>Email:</b> %s, <b>Telefone:</b> %s",
             this.id,
             this.name,
             this.istId,
             this.type,
             this.email,
-            this.phoneNumber,
-            this.status ? "Ativo" : "Inativo"
+            this.phoneNumber
         );
     }    
 

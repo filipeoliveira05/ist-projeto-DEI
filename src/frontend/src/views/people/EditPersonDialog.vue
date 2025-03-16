@@ -11,7 +11,6 @@
         <v-select :items="['Coordenador', 'Staff', 'Aluno', 'Professor', 'SC']"
                   label="Categoria" v-model="editedPerson.type"></v-select>
         <v-text-field label="Email" v-model="editedPerson.email"></v-text-field>
-        <v-switch label="Ativo" v-model="editedPerson.status"></v-switch>
         <v-text-field label="Telefone" v-model="editedPerson.phoneNumber"></v-text-field>
       </v-card-text>
 

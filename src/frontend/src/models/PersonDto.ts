@@ -4,7 +4,6 @@ export default class PersonDto {
   istId?: string
   type?: string
   email?: string
-  status?: boolean
   phoneNumber?: string
 
 

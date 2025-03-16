@@ -45,11 +45,6 @@
         Aluno
       </v-chip>
     </template>
-    <template v-slot:[`item.status`]="{ item }">
-      <v-chip :color="item.status ? 'green' : 'red'" text-color="white">
-        {{ item.status ? 'Ativo' : 'Inativo' }}
-      </v-chip>
-    </template>
     <template v-slot:[`item.actions`]="{ item }">
       <EditPersonDialog :person="item" @person-updated="getPeople" />
       <DeletePersonDialog :person="item" @confirm-delete="deletePerson" />
@@ -106,13 +101,6 @@ const headers = [
     filterable: true
   },
   {
-    title: 'Status',
-    key: 'status',
-    value: 'status',
-    sortable: true,
-    filterable: true
-  },
-  {
     title: 'Telefone',
     key: 'phoneNumber',
     value: 'phoneNumber',
@@ -126,7 +114,6 @@ const headers = [
     sortable: false,
     filterable: false
   }
-  // TODO: maybe add another column with possible actions? (edit / delete)
 ]
 
 const people: PeopleDto[] = reactive([])
