@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
+import pt.ulisboa.tecnico.rnl.dei.dms.log.LogEntry.LogType;
+import pt.ulisboa.tecnico.rnl.dei.dms.log.LogService;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.dto.PersonDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.repository.PersonRepository;
@@ -25,6 +27,9 @@ public class PersonService {
 
 	@Autowired
 	private PersonRepository personRepository;
+
+	@Autowired
+	private LogService logService;
 
 	private Person fetchPersonOrThrow(long id) {
 		return personRepository.findById(id)
@@ -99,7 +104,10 @@ public class PersonService {
 		validatePerson(personDto);
 
 		Person person = new Person(personDto);
-		return new PersonDto(personRepository.save(person));
+		PersonDto savedPerson = new PersonDto(personRepository.save(person));
+        logService.log(LogType.CREATE_PERSON, "<b>Pessoa criada:</b> " + person.getDetails());
+
+		return savedPerson;
 	}
 
 
@@ -120,6 +128,8 @@ public class PersonService {
 	public PersonDto updatePerson(long id, PersonDto personDto) {
 		Person person = fetchPersonOrThrow(id);
 	
+		String beforeUpdate = person.getDetails();
+	
 		if (personRepository.findByIstId(personDto.istId())
 				.filter(existingPerson -> !existingPerson.getId().equals(id))
 				.isPresent()) {
@@ -139,8 +149,15 @@ public class PersonService {
 		}
 	
 		person.updateFromDto(personDto);
-		return new PersonDto(personRepository.save(person));
+		PersonDto updatedPerson = new PersonDto(personRepository.save(person));
+	
+		String afterUpdate = person.getDetails();
+
+		logService.log(LogType.EDIT_PERSON, "<b>Antes:</b> " + beforeUpdate + "\n <b>Depois:</b> " + afterUpdate);
+	
+		return updatedPerson;
 	}
+	
 	
 
 	@Transactional
@@ -153,8 +170,9 @@ public class PersonService {
 
 	@Transactional
 	public void deletePerson(long id) {
-		fetchPersonOrThrow(id); // ensure exists
+		Person person = fetchPersonOrThrow(id);
 		personRepository.deleteById(id);
+		logService.log(LogType.DELETE_PERSON, "<b>Pessoa removida:</b> " + person.getDetails());
 	}
 
 
@@ -162,9 +180,12 @@ public class PersonService {
 	public void updateThesisWorkflowState(long id, String newState) {
 		Person person = fetchPersonOrThrow(id);
 		try {
+			Person.ThesisWorkflowState oldState = person.getThesisWorkflowState();
 			Person.ThesisWorkflowState state = Person.ThesisWorkflowState.valueOf(newState.toUpperCase());
 			person.setThesisWorkflowState(state);
 			personRepository.save(person);
+			String logMessage = "Aluno <b>" + person.getName() + "</b> (" + person.getIstId() + "): Estado do <b>Workflow</b> de <b>Tese</b> alterado de <b>" + oldState + "</b> para <b>" + newState + "</b>";
+			logService.log(LogType.UPDATE_THESIS_WORKFLOW, logMessage);
 		} catch (IllegalArgumentException e) {
 			throw new DEIException(ErrorMessage.INVALID_WORKFLOW_STATE, newState);
 		}
@@ -175,32 +196,15 @@ public class PersonService {
 	public void updateDefenseWorkflowState(long id, String newState) {
 		Person person = fetchPersonOrThrow(id);
 		try {
+			Person.DefenseWorkflowState oldState = person.getDefenseWorkflowState();
 			Person.DefenseWorkflowState state = Person.DefenseWorkflowState.valueOf(newState.toUpperCase());
 			person.setDefenseWorkflowState(state);
 			personRepository.save(person);
+			String logMessage = "Aluno <b>" + person.getName() + "</b> (" + person.getIstId() + "): Estado do <b>Workflow</b> de <b>Defesa</b> alterado de <b>" + oldState + "</b> para <b>" + newState + "</b>";
+			logService.log(LogType.UPDATE_DEFENSE_WORKFLOW, logMessage);
 		} catch (IllegalArgumentException e) {
 			throw new DEIException(ErrorMessage.INVALID_WORKFLOW_STATE, newState);
 		}
-	}
-
-	@Transactional
-	public void submitJuryProposal(long personId, List<Long> teacherIds) {
-		Person person = fetchPersonOrThrow(personId);
-		
-		if (person.getType() != Person.PersonType.STUDENT) {
-			throw new DEIException(ErrorMessage.PERSON_NOT_A_STUDENT);
-		}
-
-		List<Person> teachers = teacherIds.stream()
-			.map(this::fetchPersonOrThrow)
-			.filter(p -> p.getType() == Person.PersonType.TEACHER)
-			.toList();
-
-		person.getJuryTeachers().clear();
-		person.getJuryTeachers().addAll(teachers);
-
-		person.setThesisWorkflowState(Person.ThesisWorkflowState.PROPOSTA_JURI_SUBMETIDA);
-		personRepository.save(person);
 	}
 
 	public Map<String, Long> getStatistics() {
