@@ -27,7 +27,7 @@
     <v-select
       v-model="selectedDefenseWorkflowState"
       :items="defenseWorkflowStateOptions"
-      label="Filtrar por estado doworkflow de defesa"
+      label="Filtrar por estado do workflow de defesa"
       variant="outlined"
       hide-details
       clearable
