@@ -89,10 +89,4 @@ public class PersonController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PatchMapping("/people/{id}/jury")
-	public ResponseEntity<Void> submitJuryProposal(@PathVariable long id, @RequestBody List<Long> teacherIds) {
-		personService.submitJuryProposal(id, teacherIds);
-		return ResponseEntity.noContent().build();
-	}
-
 }
