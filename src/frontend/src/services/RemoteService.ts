@@ -52,10 +52,6 @@ export default class RemoteServices {
     return httpClient.patch(`/${id}/defense-state/${state}`);
   }
 
-  static async submitJuryProposal(personId: number, teacherIds: number[]): Promise<void> {
-    return httpClient.patch(`/people/${personId}/jury`, teacherIds);
-  }
-
   static async getLogs(): Promise<any> {
     return httpClient.get('/logs');
   }
