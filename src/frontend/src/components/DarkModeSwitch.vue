@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
-import { useAppearanceStore } from '@/stores/appearance'
+import { useAppearanceStore } from '../stores/appearance'
 
 const theme = useTheme()
 const appearanceStore = useAppearanceStore()

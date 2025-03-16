@@ -6,7 +6,7 @@
 
         <br>
 
-        <!-- Filtros -->
+        <!-- Filters -->
         <v-row class="mb-4">
           <v-col cols="12" md="4">
             <v-select
@@ -36,7 +36,7 @@
           </v-col>
         </v-row>
 
-        <!-- Tabela de Logs -->
+        <!-- Logs table -->
         <v-data-table
           v-model:items-per-page="itemsPerPage"
           :headers="headers"
@@ -63,7 +63,6 @@
 import { ref, computed, onMounted } from "vue";
 import RemoteServices from "@/services/RemoteService";
 
-// Estados
 const logs = ref([]);
 const search = ref("");
 const selectedDate = ref(null);
@@ -71,7 +70,6 @@ const selectedType = ref(null);
 const dateMenu = ref(false);
 const itemsPerPage = ref(10);
 
-// Tipos de log para dropdown
 const logTypes = ref([
   { title: "Criação de Pessoa", value: "CREATE_PERSON" },
   { title: "Atualização de Pessoa", value: "EDIT_PERSON" },
@@ -80,14 +78,12 @@ const logTypes = ref([
   { title: "Alteração do Workflow de Defesa", value: "UPDATE_DEFENSE_WORKFLOW" }
 ]);
 
-// Cabeçalhos da tabela
 const headers = [
   { title: "Timestamp", key: "timestamp" },
   { title: "Action", key: "type" },
   { title: "Details", key: "details" }
 ];
 
-// Buscar logs do backend
 const fetchLogs = async () => {
   try {
     logs.value = await RemoteServices.getLogs();
@@ -98,12 +94,10 @@ const fetchLogs = async () => {
 
 onMounted(fetchLogs);
 
-// Data formatada para exibição
 const formattedDate = computed(() => {
   return selectedDate.value ? new Date(selectedDate.value).toLocaleDateString() : "";
 });
 
-// Mapeia os valores de enum para strings legíveis
 const formatLogType = (type) => {
   const typeMap = {
     CREATE_PERSON: "Criação de Pessoa",
@@ -115,7 +109,6 @@ const formatLogType = (type) => {
   return typeMap[type] || type;
 };
 
-// Filtragem de logs
 const filteredLogs = computed(() => {
   return logs.value.filter(log => {
     const matchesSearch = selectedType.value ? log.type === selectedType.value : true;
@@ -126,14 +119,13 @@ const filteredLogs = computed(() => {
   });
 });
 
-// Exportar logs como CSV
 const exportCSV = () => {
   const csvContent = [
     ["Timestamp", "Action", "Details"],
     ...logs.value.map(log => [
       new Date(log.timestamp).toLocaleString(),
       formatLogType(log.type),
-      log.details.replace(/\n/g, " | ") // Para manter a legibilidade no CSV
+      log.details.replace(/\n/g, " | ")
     ])
   ]
     .map(row => row.join(","))

@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAppearanceStore } from '@/stores/appearance';
+import { useAppearanceStore } from '../stores/appearance';
 import { onMounted } from 'vue';
 
 const appearanceStore = useAppearanceStore()

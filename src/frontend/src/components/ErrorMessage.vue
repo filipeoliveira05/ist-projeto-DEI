@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAppearanceStore } from '@/stores/appearance';
+import { useAppearanceStore } from '../stores/appearance';
 import { ref, watch, watchEffect } from 'vue';
 
 const appearanceStore = useAppearanceStore()

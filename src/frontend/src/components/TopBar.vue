@@ -4,8 +4,8 @@
 </template>
 
 <script setup lang="ts">
-import UtilBar from '@/components/UtilBar.vue'
-import NavBar from '@/components/NavBar.vue'
+import UtilBar from '../components/UtilBar.vue'
+import NavBar from '../components/NavBar.vue'
 
 const navbarItems = [
   { name: 'Alunos', path: '/students', icon: 'mdi-account-multiple' },
